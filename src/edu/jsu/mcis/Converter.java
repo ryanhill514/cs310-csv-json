@@ -62,7 +62,6 @@ public class Converter {
         String results = "";
         
         try {
-            
             CSVReader reader = new CSVReader(new StringReader(csvString));
             List<String[]> full = reader.readAll();
             Iterator<String[]> iterator = full.iterator();
@@ -75,7 +74,7 @@ public class Converter {
             
             record = iterator.next();
             for (int i = 0; i < record.length; ++i) { // Iterate through
-                    colHeaders.add(record[i]);  
+                colHeaders.add(record[i]);  
             }//end for loop
              
             while (iterator.hasNext()) { // Iterate through all records
@@ -87,7 +86,6 @@ public class Converter {
                     row.add(Integer.parseInt(record[i]));
                 }//end for loop
                 data.add(row);
-                
             }//end while loop
             
             JSONObject jsonObject = new JSONObject();
@@ -99,9 +97,7 @@ public class Converter {
         }//end try block      
         
         catch(Exception e) { return e.toString(); }
-        
         return results.trim();
-        
     }
     
     public static String jsonToCsv(String jsonString) {
@@ -109,7 +105,6 @@ public class Converter {
         String results = "";
         
         try {
-
             StringWriter writer = new StringWriter();
             CSVWriter csvWriter = new CSVWriter(writer, ',', '"', '\n');
             
@@ -125,44 +120,32 @@ public class Converter {
             String [] rows = new String[rowHeaders.size()];
             String [] datas = new String[data.size()];
             
-            for (int i = 0; i < colHeaders.size(); ++i)
+            for (int i = 0; i < colHeaders.size(); ++i){
                 cols[i] = colHeaders.get(i).toString();
-            
+            }// end for loop
             csvWriter.writeNext(cols);
             
             for (int i = 0; i < rowHeaders.size(); ++i) {
-                
                 rows[i] = rowHeaders.get(i).toString();
                 datas[i] = data.get(i).toString();
-                
-                
-            }
+            }// end for loop
             
             for(int i=0; i<rowHeaders.size(); i++){
-            
                 JSONArray dataValues = (JSONArray)parser.parse(datas[i]);
-                
                 String[] row = new String[dataValues.size() + 1];
-                
                 row[0] = rows[i];
-            
+           
                 for(int j=0; j<dataValues.size(); j++){
                     row[j + 1] = dataValues.get(j).toString();
-                    
                 }// end for loop
-                
                 csvWriter.writeNext(row);
                 
             }// end for loop
-            
             results = writer.toString();
         }// end try block
         
-        
         catch(Exception e) { return e.toString(); }
-        
         return results.trim();
-        
     }
 
 }
